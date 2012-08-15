@@ -107,16 +107,14 @@ void GrabCut::runGrabCut(){
 
     if(backgroundGraph.size()==0)
     {
-   //     runResidualGrabCutNoBG();
-        runGrabCutNoBG();
+        runResidualGrabCutNoBG();
+   //     runGrabCutNoBG();
         return;
     }
     QColor c;
 
     gr = new FloatGraph(segmentNumber,segmentNumber*10);
 
-  //  ofstream of;
-  //  of.open("GraphDump.txt");
 
     for(int i=0;i<segmentNumber;i++)
         (*regionNode)[i].groupID = 0;
@@ -196,9 +194,9 @@ void GrabCut::runGrabCut(){
     meane1=meane1/(2*segmentNumber);
     betaMean = betaMean/betaNum;
     //Parameters !!!
-    float lambda = 1.5;//If too low let changes on t-weights
+    float lambda = 1;//If too low let changes on t-weights
 
-    float e1const = 0.5*(1/meane1);
+    float e1const = 70*(1/meane1);
     float e2const = 1; //Less than 2
 
     float beta = 1/betaMean;
@@ -206,11 +204,11 @@ void GrabCut::runGrabCut(){
 
     for(int i=0;i<segmentNumber;i++)
     {
-          if((*regionNode)[i].groupID==1)
-             gr->add_tweights(i,0,20);
-         else if((*regionNode)[i].groupID==2)
-             gr->add_tweights(i,20,0);
-          else
+       //   if((*regionNode)[i].groupID==1)
+       //      gr->add_tweights(i,0,20);
+       //  else if((*regionNode)[i].groupID==2)
+       //      gr->add_tweights(i,20,0);
+       //   else
               gr->add_tweights(i,e1const*gMM.EnergyBG[i],e1const*gMM.EnergyFG[i]);
 
 
@@ -228,11 +226,33 @@ void GrabCut::runGrabCut(){
 
 
     }
+    ofstream of1;
+    of1.open("GraphDumpBefore.txt");
+    for(int y=0;y<height;y++)
+    {
+        for(int x=0;x<width;x++)
+            of1<<gr->get_trcap(segmentIDs[y*width+x])<<" ";
+        of1<<endl;
+    }
+    of1.close();
 
-//    of.close();
     gr->maxflow();
 
-/*
+/*    ofstream of2;
+    of2.open("GraphDumpAfter.txt");
+
+    of2<<width<<" "<<height<<endl;
+    for(int y=0;y<height;y++)
+    {
+        for(int x=0;x<width;x++)
+            of2<<gr->get_trcap(segmentIDs[y*width+x])<<" ";
+        of2<<endl;
+    }
+
+
+    of2.close();
+*/
+    /*
     for(int i=0;i<segmentNumber;i++)
         if(gMM.EnergyBG[i]>=gMM.EnergyFG[i])
             (*regionNode)[i].groupID = 2;
@@ -721,7 +741,7 @@ void GrabCut::runResidualGrabCutFirstRun(){
     float lambda = 1;//If too low let changes on t-weights
 
     float e1const = 1 *(1/meane1);
-    float e2const = 0.4; //Less than 2
+    float e2const = 0.6; //Less than 2
 
     float beta = 1/betaMean;
     float capp;
@@ -901,7 +921,7 @@ void GrabCut::runResidualGrabCutNoBG(){
             float lambda = 1;//If too low let changes on t-weights
 
             e1const = 1 *(1/meane1);
-            float e2const = 0.4; //Less than 2
+            float e2const = 0.6; //Less than 2
 
             float beta = 1/betaMean;
             float capp;

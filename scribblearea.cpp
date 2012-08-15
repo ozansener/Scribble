@@ -92,9 +92,11 @@ bool ScribbleArea::openImage(const QString &fileName)
     this->reset();
 
     if (!loadedImage.load(fileName))
+    {
+        qDebug() << "Image is not loaded properly";
+        qDebug() <<  QImageReader::supportedImageFormats();
         return false;
-
-
+    }
     QSize newSize;
     newSize.setHeight(NORMALHEIGHT);
     newSize.setWidth(NORMALWIDTH);
@@ -117,7 +119,7 @@ bool ScribbleArea::openImage(const QString &fileName)
             Y = min(255,max(0,(  0.257*c.red()+0.504*c.green()+0.098*c.blue()+16)));
             Y = min(255,max(Y*0.75,0));
             origG.setPixel(w,h,QColor(Y,Y,Y).rgb());
-         }
+        }
 
     image=origG;
     mIntSegm.drawOSBoundaryOnImage(&image);
