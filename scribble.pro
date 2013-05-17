@@ -1,4 +1,3 @@
-\CONFIG += qt
 HEADERS       = mainwindow.h \
                 scribblearea.h \
     interactivesegmentation.h \
@@ -33,5 +32,8 @@ INSTALLS += target \
 symbian:include($$PWD/../../symbianpkgrules.pri)
 OTHER_FILES += instances.inc \
     instances.inc
+
+QT += widgets
+!isEmpty(QT.printsupport.name): QT += printsupport
 
 

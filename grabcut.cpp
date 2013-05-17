@@ -4,6 +4,11 @@
 #include <fstream>
 #include <iostream>
 #include <algorithm>
+
+#define LAMBDA 1
+#define E1CONST 1
+#define E2CONST 0.5
+
 using namespace std;
 GrabCut::GrabCut()
 {
@@ -111,6 +116,7 @@ void GrabCut::runGrabCut(){
    //     runGrabCutNoBG();
         return;
     }
+    /*
     QColor c;
 
     gr = new FloatGraph(segmentNumber,segmentNumber*10);
@@ -238,28 +244,7 @@ void GrabCut::runGrabCut(){
 
     gr->maxflow();
 
-/*    ofstream of2;
-    of2.open("GraphDumpAfter.txt");
 
-    of2<<width<<" "<<height<<endl;
-    for(int y=0;y<height;y++)
-    {
-        for(int x=0;x<width;x++)
-            of2<<gr->get_trcap(segmentIDs[y*width+x])<<" ";
-        of2<<endl;
-    }
-
-
-    of2.close();
-*/
-    /*
-    for(int i=0;i<segmentNumber;i++)
-        if(gMM.EnergyBG[i]>=gMM.EnergyFG[i])
-            (*regionNode)[i].groupID = 2;
-        else
-            (*regionNode)[i].groupID = 1;
-
-*/
 
     for(int i=0;i<segmentNumber;i++)
         if(gr->what_segment(i)==FloatGraph::SOURCE)
@@ -273,7 +258,7 @@ void GrabCut::runGrabCut(){
     delete [] gMM.EnergyFG;
     delete [] gMM.EnergyBG;
     delete [] gMM.RegionNumPcsdPixel;
-
+*/
 }
 
 
@@ -486,10 +471,10 @@ void GrabCut::runGrabCutNoBG(){
     float e2const = 1.6;
 */
     //Parameters !!!
-    float lambda = 1;//If too low let changes on t-weights
+    float lambda = LAMBDA;//If too low let changes on t-weights
 
-    float e1const = 1 *(1/meane1);
-    float e2const = 0.4; //Less than 2
+    float e1const = E1CONST *(1/meane1);
+    float e2const = E2CONST; //Less than 2
 
     /*
     float lambda = 1.5;//If too low let changes on t-weights, consider to change this sentence :)
@@ -738,10 +723,10 @@ void GrabCut::runResidualGrabCutFirstRun(){
      }
     betaMean = betaMean/betaNum;
     meane1=meane1/(2*segmentNumber);
-    float lambda = 1;//If too low let changes on t-weights
+    float lambda = LAMBDA;//If too low let changes on t-weights
 
-    float e1const = 1 *(1/meane1);
-    float e2const = 0.6; //Less than 2
+    float e1const = E1CONST *(1/meane1);
+    float e2const = E2CONST; //Less than 2
 
     float beta = 1/betaMean;
     float capp;
@@ -918,10 +903,10 @@ void GrabCut::runResidualGrabCutNoBG(){
 
              }
             meane1=meane1/(2*segmentNumber);
-            float lambda = 1;//If too low let changes on t-weights
+            float lambda = LAMBDA;//If too low let changes on t-weights
 
-            e1const = 1 *(1/meane1);
-            float e2const = 0.6; //Less than 2
+            e1const = E1CONST *(1/meane1);
+            float e2const = E2CONST; //Less than 2
 
             float beta = 1/betaMean;
             float capp;

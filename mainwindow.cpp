@@ -38,7 +38,7 @@
 **
 ****************************************************************************/
 
-#include <QtGui>
+#include <QtWidgets>
 
 #include "mainwindow.h"
 #include "scribblearea.h"
@@ -98,8 +98,9 @@ void MainWindow::save()
 void MainWindow::penWidth()
 //! [9] //! [10]
 {
+
     bool ok;
-    int newWidth = QInputDialog::getInteger(this, tr("Scribble"),
+    int newWidth = QInputDialog::getInt(this, tr("Scribble"),
                                             tr("Select pen width:"),
                                             scribbleArea->penWidth(),
                                             1, 50, 1, &ok);

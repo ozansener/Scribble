@@ -38,11 +38,17 @@
 **
 ****************************************************************************/
 
-#include <QtGui>
+#include <QtWidgets>
+#ifndef QT_NO_PRINTER
+#include <QPrinter>
+#include <QPrintDialog>
+#endif
+
 #include "scribblearea.h"
+
 #define max(a,b) (((a) > (b)) ? (a) : (b))
 #define min(a,b) (((a) < (b)) ? (a) : (b))
-//#define LET_USER_DCLICK
+#define LET_USER_DCLICK
 
 int updateCntOS(int cntOS,int rad){
     /*
@@ -290,14 +296,6 @@ void ScribbleArea::paintEvent(QPaintEvent *event)
 
 void ScribbleArea::resizeEvent(QResizeEvent *event)
 {
-    /*
-    if (width() > image.width() || height() > image.height()) {
-        int newWidth = qMax(width() + 128, image.width());
-        int newHeight = qMax(height() + 128, image.height());
-        resizeImage(&image, QSize(newWidth, newHeight));
-        update();
-    }
-    */
     QWidget::resizeEvent(event);
 }
 //! [16]
@@ -428,10 +426,6 @@ void ScribbleArea::computeDepth(){
 void ScribbleArea::changeView(int idd){
     mIntSegm.changeView(&image,idd);
     update();
-    char buffer[5];
-    sprintf(buffer, "%d.jpg", saveCnt);
-    image.save("abc.jpg", 0, -1);
-    saveCnt++;
 }
 
 void ScribbleArea::changeDepthMode(int dMode)
@@ -439,10 +433,6 @@ void ScribbleArea::changeDepthMode(int dMode)
     mIntSegm.changeDepthMode(dMode);
     mIntSegm.changeView(&image,2);
     update();
-    char buffer[5];
-    sprintf(buffer, "%d.jpg", saveCnt);
-    //image.save(buffer, 0, -1);
-    saveCnt++;
 }
 
 void ScribbleArea::changeAlphaMatte(int matteSize)
@@ -450,10 +440,6 @@ void ScribbleArea::changeAlphaMatte(int matteSize)
     mIntSegm.changeAlphaMatte(matteSize);
     mIntSegm.changeView(&image,2);
     update();
-    char buffer[5];
-    sprintf(buffer, "%d.jpg", saveCnt);
-    //image.save(buffer, 0, -1);
-    saveCnt++;
 }
 
 void ScribbleArea::changeFGEnlargement(int mode)
@@ -461,20 +447,12 @@ void ScribbleArea::changeFGEnlargement(int mode)
     mIntSegm.changeFGEnlargementMode(mode);
     mIntSegm.changeView(&image,2);
     update();
-    char buffer[5];
-    sprintf(buffer, "%d.jpg", saveCnt);
-    //image.save(buffer, 0, -1);
-    saveCnt++;
 }
 void ScribbleArea::changeBlur(int mode)
 {
     mIntSegm.changeBlurMode(mode);
     mIntSegm.changeView(&image,2);
     update();
-    char buffer[5];
-    sprintf(buffer, "%d.jpg", saveCnt);
-    //image.save(buffer, 0, -1);
-    saveCnt++;
 }
 
 void ScribbleArea::enableSPMerge(int md){
